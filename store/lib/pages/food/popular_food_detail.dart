@@ -31,7 +31,7 @@ class PopularFoodDetail extends StatelessWidget {
               ),
             ),
           ),
-          // icons widgets כיכיייכ
+          // icons widgets
           Positioned(
             top: Dimensions.height45,
             left: Dimensions.width20,
