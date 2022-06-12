@@ -14,6 +14,6 @@ class AppConstans {
 }
 
 
-// https://mvs.bslmeiyu.com/api/v1/products/popular
+// https://mvs.bslmeiyu.com/api/v1/products/recommended
 
 

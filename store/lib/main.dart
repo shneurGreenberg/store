@@ -4,6 +4,7 @@ import 'package:store/controllers/popular_product_controller.dart';
 import 'package:store/pages/home/main_food_page.dart';
 
 // import 'package:store/pages/home/main_food_page.dart';
+import 'controllers/recommended_product_controller.dart';
 import 'helper/dependencies.dart' as dep;
 
 void main() async {
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // provide the PopularProductController to the GetX
     Get.find<PopularProductController>().getPopularProductList();
+    Get.find<RecommendedProductController>().getRecommendedProductList();
+
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',

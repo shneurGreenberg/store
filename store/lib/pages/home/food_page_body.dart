@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:store/controllers/recommended_product_controller.dart';
 // import 'package:get/get.dart';
 // import 'package:get/get_state_manager/get_state_manager.dart';
 // import 'package:store/controllers/popular_product_controller.dart';
@@ -8,6 +10,7 @@ import 'package:store/pages/home/card_slider.dart';
 import 'package:store/utils/dimensions.dart';
 import 'package:store/widgets/food_info.dart';
 
+import '../../utils/colors.dart';
 import '../../widgets/text/big_text.dart';
 import '../../widgets/text/small_text.dart';
 
@@ -62,66 +65,77 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         ),
 
         // Popular cards.
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: EdgeInsets.only(
-                left: Dimensions.width20,
-                right: Dimensions.width20,
-                top: Dimensions.height10,
-              ),
-              child: Row(children: [
-                // popular cards - image
-                Container(
-                  width: Dimensions.listViewImageSise,
-                  height: Dimensions.listViewImageSise,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius20),
-                    color: Colors.white38,
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/food1.jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+        GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
+          return recommendedProduct.isLoaded
+              ? ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        left: Dimensions.width20,
+                        right: Dimensions.width20,
+                        top: Dimensions.height10,
+                      ),
+                      child: Row(children: [
+                        // popular cards - image
+                        Container(
+                          width: Dimensions.listViewImageSise,
+                          height: Dimensions.listViewImageSise,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.radius20),
+                            color: Colors.white38,
+                            image: const DecorationImage(
+                              image: AssetImage("assets/images/food1.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
 
-                // popular cards - text
-                Expanded(
-                  child: Container(
-                    height: Dimensions.listViewTextSise,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(Dimensions.radius20),
-                          bottomRight: Radius.circular(Dimensions.radius20)),
-                      color: const Color.fromARGB(255, 220, 139, 139),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: Dimensions.width10, right: Dimensions.width10),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            BigText(
-                              text: "Nutrition fruit meal in China.",
-                              color: Colors.white,
+                        // popular cards - text
+                        Expanded(
+                          child: Container(
+                            height: Dimensions.listViewTextSise,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight:
+                                      Radius.circular(Dimensions.radius20),
+                                  bottomRight:
+                                      Radius.circular(Dimensions.radius20)),
+                              color: const Color.fromARGB(255, 220, 139, 139),
                             ),
-                            SmallText(
-                              text: "With a discovery characteristics.",
-                              color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: Dimensions.width10,
+                                  right: Dimensions.width10),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    BigText(
+                                      text: "Nutrition fruit meal in China.",
+                                      color: Colors.white,
+                                    ),
+                                    SmallText(
+                                      text: "With a discovery characteristics.",
+                                      color: Colors.white,
+                                    ),
+                                    FoodInfo()
+                                  ]),
                             ),
-                            FoodInfo()
-                          ]),
-                    ),
-                  ),
+                          ),
+                        )
+                      ]),
+                    );
+                  },
+                  itemCount: 10,
                 )
-              ]),
-            );
-          },
-          itemCount: 10,
-        )
+              : CircularProgressIndicator(
+                  color: AppColors.mainColor,
+                );
+        })
       ],
     );
   }
