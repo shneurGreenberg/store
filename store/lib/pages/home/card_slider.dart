@@ -1,8 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:store/controllers/popular_product_controller.dart';
+import 'package:store/routes/route_helper.dart';
 import 'package:store/utils/app_constans.dart';
 import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';
@@ -121,16 +121,21 @@ class _CardSliderState extends State<CardSlider> {
     return Transform(
       transform: matrix,
       child: Stack(children: [
-        Container(
-          height: Dimensions.pageViewContainer,
-          margin: EdgeInsets.only(
-              left: Dimensions.width10, right: Dimensions.width10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Dimensions.radius30),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                AppConstans.BASE_URL + "/uploads/" + popularProduct.img!,
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(RouteHelper.getPopularFood(index));
+          },
+          child: Container(
+            height: Dimensions.pageViewContainer,
+            margin: EdgeInsets.only(
+                left: Dimensions.width10, right: Dimensions.width10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.radius30),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  AppConstans.BASE_URL + "/uploads/" + popularProduct.img!,
+                ),
               ),
             ),
           ),

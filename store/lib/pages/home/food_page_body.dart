@@ -10,6 +10,8 @@ import 'package:store/pages/home/card_slider.dart';
 import 'package:store/utils/dimensions.dart';
 import 'package:store/widgets/food_info.dart';
 
+import '../../routes/route_helper.dart';
+import '../../utils/app_constans.dart';
 import '../../utils/colors.dart';
 import '../../widgets/text/big_text.dart';
 import '../../widgets/text/small_text.dart';
@@ -34,8 +36,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
 
         const CardSlider(),
 
-        // Popular text section.
-        // Popular text title.
+        // Recommended text section.
+        // Recommended text title.
         SizedBox(
           height: Dimensions.height30,
         ),
@@ -64,73 +66,88 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           ),
         ),
 
-        // Popular cards.
+        // Recommended cards.
         GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
           return recommendedProduct.isLoaded
               ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
+                  itemCount: recommendedProduct.recommendedrProductList.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.only(
-                        left: Dimensions.width20,
-                        right: Dimensions.width20,
-                        top: Dimensions.height10,
-                      ),
-                      child: Row(children: [
-                        // popular cards - image
-                        Container(
-                          width: Dimensions.listViewImageSise,
-                          height: Dimensions.listViewImageSise,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(Dimensions.radius20),
-                            color: Colors.white38,
-                            image: const DecorationImage(
-                              image: AssetImage("assets/images/food1.jpg"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                    return GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RouteHelper.getRecommendedFood());
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: Dimensions.width20,
+                          right: Dimensions.width20,
+                          top: Dimensions.height10,
                         ),
-
-                        // popular cards - text
-                        Expanded(
-                          child: Container(
-                            height: Dimensions.listViewTextSise,
+                        child: Row(children: [
+                          // popular cards - image
+                          Container(
+                            width: Dimensions.listViewImageSise,
+                            height: Dimensions.listViewImageSise,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight:
-                                      Radius.circular(Dimensions.radius20),
-                                  bottomRight:
-                                      Radius.circular(Dimensions.radius20)),
-                              color: const Color.fromARGB(255, 220, 139, 139),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: Dimensions.width10,
-                                  right: Dimensions.width10),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: const [
-                                    BigText(
-                                      text: "Nutrition fruit meal in China.",
-                                      color: Colors.white,
-                                    ),
-                                    SmallText(
-                                      text: "With a discovery characteristics.",
-                                      color: Colors.white,
-                                    ),
-                                    FoodInfo()
-                                  ]),
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radius20),
+                              color: Colors.white38,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  AppConstans.BASE_URL +
+                                      "/uploads/" +
+                                      recommendedProduct
+                                          .recommendedrProductList[index].img!,
+                                ),
+                              ),
                             ),
                           ),
-                        )
-                      ]),
+
+                          // popular cards - text
+                          Expanded(
+                            child: Container(
+                              height: Dimensions.listViewTextSise,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topRight:
+                                        Radius.circular(Dimensions.radius20),
+                                    bottomRight:
+                                        Radius.circular(Dimensions.radius20)),
+                                color: const Color.fromARGB(255, 220, 139, 139),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Dimensions.width10,
+                                    right: Dimensions.width10),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      BigText(
+                                        text: recommendedProduct
+                                            .recommendedrProductList[index]
+                                            .name!,
+                                        color: Colors.white,
+                                      ),
+                                      SmallText(
+                                        text: recommendedProduct
+                                            .recommendedrProductList[index]
+                                            .name!,
+                                        color: Colors.white,
+                                      ),
+                                      const FoodInfo()
+                                    ]),
+                              ),
+                            ),
+                          )
+                        ]),
+                      ),
                     );
                   },
-                  itemCount: 10,
                 )
               : CircularProgressIndicator(
                   color: AppColors.mainColor,

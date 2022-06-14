@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-
 import '../controllers/popular_product_controller.dart';
 import '../controllers/recommended_product_controller.dart';
-import '../data/Repository/Recommended_product_repo.dart';
+import '../data/Repository/recommended_product_repo.dart';
 import '../data/Repository/popular_product_repo.dart';
 import '../data/api/api_client.dart';
 import '../utils/app_constans.dart';

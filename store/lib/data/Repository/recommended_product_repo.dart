@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 import 'package:store/data/api/api_client.dart';
 import 'package:store/utils/app_constans.dart';

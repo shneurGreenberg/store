@@ -13,9 +13,14 @@ class ApiClient extends GetConnect implements GetxService {
     baseUrl = appBaseUrl;
     timeout = const Duration(seconds: 30);
     token = AppConstans.TOTEN;
+
     _mainHeaders = {
       "Content-Type": 'application/json; charset=utf-8',
       "Authorization": 'Bearer $token',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,GET,DELETE,PUT,OPTIONS",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Credentials": "true",
     };
   }
   Future<Response> getData(String uri) async {
