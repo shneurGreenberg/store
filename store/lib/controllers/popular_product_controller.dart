@@ -14,6 +14,7 @@ class PopularProductController extends GetxController {
   List<ProductModel> get popularProductList => _popularProductList;
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
+  int _quantity = 0;
 
 // function that will fetch the popular product list from the server
   Future<void> getPopularProductList() async {
@@ -30,5 +31,14 @@ class PopularProductController extends GetxController {
     } else {
       print(' 3 $response');
     }
+  }
+
+  void setQuantity(bool isIncrement) {
+    if (isIncrement) {
+      _quantity++;
+    } else {
+      _quantity--;
+    }
+    update();
   }
 }
