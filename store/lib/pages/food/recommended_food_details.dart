@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store/app_icon.dart';
+import 'package:store/controllers/recommended_product_controller.dart';
 import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';
 import 'package:store/widgets/text/big_text.dart';
 import 'package:store/widgets/text/expandable_text.dart';
 import '../../routes/route_helper.dart';
+import '../../utils/app_constans.dart';
+import '../../utils/colors.dart';
 
 class RecommendedFood extends StatelessWidget {
-  const RecommendedFood({Key? key}) : super(key: key);
+  final int pageId;
+
+  const RecommendedFood({Key? key, required this.pageId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product = Get.find<RecommendedProductController>()
+        .recommendedrProductList[pageId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -41,8 +48,8 @@ class RecommendedFood extends StatelessWidget {
                 ),
                 width: double.maxFinite,
                 child: Center(
-                    child: BigText(
-                        text: "Recommended Food", size: Dimensions.font26)),
+                    child:
+                        BigText(text: product.name!, size: Dimensions.font26)),
                 padding: const EdgeInsets.symmetric(vertical: 10),
               ),
             ),
@@ -50,19 +57,23 @@ class RecommendedFood extends StatelessWidget {
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 200,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/images/food1.jpg",
+              background: Image.network(
+                AppConstans.BASE_URL + "/uploads/" + product.img!,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
               ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-              child: const ExpandableText(
-                  text:
-                      "loremorem ipsum dolor sit amet consoorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing elirem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem orem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eliipsum dolor sit amet consectetur adipiscing eliectetur adipiscing eli orem ipsum dolor sit amet consectetur adipiscing eli orem ipsum dolor sit amet consectetur adipiscing eli orem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eli orem ipsum dolor sit amet consectetur adipiscing eliorem ipsum dolor sit amet consectetur adipiscing eli orem ipsum dolor sit amet consectetur adipiscing eli ipsum dolor sit amet consectetur adipiscing elit"),
+            child: Column(
+              children: [
+                Container(
+                  child: ExpandableText(
+                    text: product.description!,
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+                ),
+              ],
             ),
           )
         ],
@@ -84,7 +95,7 @@ class RecommendedFood extends StatelessWidget {
                   iconSize: Dimensions.iconSize24,
                 ),
                 BigText(
-                  text: "\$12.88 " " x " " 1",
+                  text: "\$ ${product.price!}  x  0",
                   color: AppColors.mainBlackColor,
                   size: Dimensions.font26,
                 ),
@@ -135,8 +146,8 @@ class RecommendedFood extends StatelessWidget {
                     color: AppColors.mainColor,
                     borderRadius: BorderRadius.circular(Dimensions.radius20),
                   ),
-                  child: const BigText(
-                    text: "\$10 | Add to cart",
+                  child: BigText(
+                    text: "\$ ${product.price!} | Add to cart",
                     color: Colors.white,
                   ),
                 ),

@@ -3,13 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store/controllers/recommended_product_controller.dart';
-// import 'package:get/get.dart';
-// import 'package:get/get_state_manager/get_state_manager.dart';
-// import 'package:store/controllers/popular_product_controller.dart';
 import 'package:store/pages/home/card_slider.dart';
 import 'package:store/utils/dimensions.dart';
 import 'package:store/widgets/food_info.dart';
-
 import '../../routes/route_helper.dart';
 import '../../utils/app_constans.dart';
 import '../../utils/colors.dart';
@@ -76,7 +72,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteHelper.getRecommendedFood());
+                        Get.toNamed(RouteHelper.getRecommendedFood(index));
                       },
                       child: Container(
                         margin: EdgeInsets.only(
