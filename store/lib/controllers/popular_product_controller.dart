@@ -40,5 +40,6 @@ class PopularProductController extends GetxController {
       _quantity--;
     }
     update();
+    print('quantity $_quantity');
   }
 }

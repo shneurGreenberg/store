@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:store/app_icon.dart';
+import 'package:store/widgets/app_icon.dart';
 import 'package:store/controllers/recommended_product_controller.dart';
 import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';

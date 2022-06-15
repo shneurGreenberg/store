@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:store/app_icon.dart';
+import 'package:store/widgets/app_icon.dart';
 import 'package:store/pages/home/main_food_page.dart';
 import 'package:store/utils/app_constans.dart';
 import 'package:store/utils/colors.dart';

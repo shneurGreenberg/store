@@ -6,7 +6,6 @@ import 'package:store/routes/route_helper.dart';
 import 'package:store/utils/app_constans.dart';
 import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';
-
 import '../../models/products_model.dart';
 import '../../widgets/food_description.dart';
 
