@@ -15,8 +15,9 @@ class PopularProductController extends GetxController {
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
   int _quantity = 0;
+  int get quantity => _quantity;
 
-// function that will fetch the popular product list from the server
+//  fetch the popular product list from the server
   Future<void> getPopularProductList() async {
     Response response = await popularProductRepo.getPopularProductList();
     // check if the response is successful
@@ -35,11 +36,23 @@ class PopularProductController extends GetxController {
 
   void setQuantity(bool isIncrement) {
     if (isIncrement) {
-      _quantity++;
+      _quantity = checkQuantity(_quantity + 1);
+      print('increment $_quantity');
     } else {
-      _quantity--;
+      _quantity = checkQuantity(_quantity - 1);
+      print('subtract $_quantity');
     }
     update();
-    print('quantity $_quantity');
+  }
+
+  //  if below zero then set it to zero
+  int checkQuantity(int quantity) {
+    if (quantity < 0) {
+      return quantity = 0;
+    } else if (quantity > 30) {
+      return quantity = 30;
+    } else {
+      return quantity;
+    }
   }
 }
