@@ -1,9 +1,7 @@
 // ignore_for_file: unnecessary_string_interpolations
-
 import 'package:get/get.dart';
 import 'package:store/pages/food/popular_food_detail.dart';
 import 'package:store/pages/food/recommended_food_details.dart';
-
 import '../pages/home/main_food_page.dart';
 
 class RouteHelper {
@@ -30,7 +28,7 @@ class RouteHelper {
         var pageId = Get.parameters["pageId"];
         return PopularFoodDetail(pageId: int.parse(pageId!));
       },
-      // transition: Transition.fadeIn,
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: recommendedFood,
@@ -39,7 +37,7 @@ class RouteHelper {
 
         return RecommendedFood(pageId: int.parse(pageId!));
       },
-      // transition: Transition.fadeIn,
+      transition: Transition.fadeIn,
     ),
   ];
 }

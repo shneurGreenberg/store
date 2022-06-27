@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store/controllers/cart_controller.dart';
 import 'package:store/models/products_model.dart';
 import 'package:store/utils/colors.dart';
 import '../data/Repository/popular_product_repo.dart';
@@ -9,12 +10,26 @@ import '../data/Repository/popular_product_repo.dart';
 class PopularProductController extends GetxController {
   final PopularProductRepo popularProductRepo;
   PopularProductController({required this.popularProductRepo});
-  List<ProductModel> _popularProductList = [];
+  List<ProductModel> _popularProductList = [
+    ProductModel(
+        // id: 0,
+        // name: '',
+        // price: 0,
+        // description: '',
+        // stars: 0,
+        // img: '',
+        // location: '',
+        // createdAt: '',
+        // updatedAt: '',
+        // typeId: 0,
+        ),
+  ];
 
   // get make this list accessible from outside this class
   List<ProductModel> get popularProductList => _popularProductList;
-  bool _isLoaded = false;
+  late CartController _cart;
 
+  bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
   int _quantity = 0;
   int get quantity => _quantity;
@@ -73,9 +88,23 @@ class PopularProductController extends GetxController {
     }
   }
 
-  void initProduct() {
+  void initProduct(CartController cart) {
     _quantity = 0;
     _inCartItems = 0;
+    _cart = cart;
     // update();
+  }
+
+  void addToCart(ProductModel product) {
+    if (_quantity > 0) {
+      _cart.addItem(product, _quantity);
+    } else {
+      Get.snackbar(
+        'Error',
+        'You need to add at least one item to the card',
+        backgroundColor: AppColors.mainColor,
+        colorText: const Color.fromARGB(255, 234, 61, 61),
+      );
+    }
   }
 }

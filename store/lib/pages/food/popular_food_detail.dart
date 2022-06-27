@@ -7,6 +7,7 @@ import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';
 import 'package:store/widgets/food_description.dart';
 import 'package:store/widgets/text/big_text.dart';
+import '../../controllers/cart_controller.dart';
 import '../../controllers/popular_product_controller.dart';
 import '../../widgets/text/expandable_text.dart';
 
@@ -18,7 +19,8 @@ class PopularFoodDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     var product =
         Get.find<PopularProductController>().popularProductList[pageId];
-    Get.find<PopularProductController>().initProduct();
+    Get.find<PopularProductController>()
+        .initProduct(Get.find<CartController>());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -153,9 +155,14 @@ class PopularFoodDetail extends StatelessWidget {
                   color: AppColors.mainColor,
                   borderRadius: BorderRadius.circular(Dimensions.radius20),
                 ),
-                child: BigText(
-                  text: "\$ ${product.price!} | Add to cart",
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    popularProduct.addToCart(product);
+                  },
+                  child: BigText(
+                    text: "\$ ${product.price!} | Add to cart",
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
