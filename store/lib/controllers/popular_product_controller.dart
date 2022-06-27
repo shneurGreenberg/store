@@ -44,8 +44,6 @@ class PopularProductController extends GetxController {
       _isLoaded = true;
       _popularProductList = [];
       _popularProductList.addAll(Product.fromJson(response.body).productlist);
-      // print("print1" '1  $_popularProductList');
-      // print("print1" + response.body);
 
       update();
     } else {
@@ -66,7 +64,7 @@ class PopularProductController extends GetxController {
 
   //  if below zero then set it to zero
   int checkQuantity(int quantity) {
-    if (quantity < 0) {
+    if (_inCartItems + quantity < 0) {
       Get.snackbar(
         'Error',
         'Quantity cannot be less than zero',
@@ -75,7 +73,7 @@ class PopularProductController extends GetxController {
       );
 
       return quantity = 0;
-    } else if (quantity > 30) {
+    } else if (_inCartItems + quantity > 30) {
       Get.snackbar(
         'Error',
         'Quantity cannot be more than 30',
@@ -88,23 +86,36 @@ class PopularProductController extends GetxController {
     }
   }
 
-  void initProduct(CartController cart) {
+  void initProduct(ProductModel product, CartController cart) {
     _quantity = 0;
     _inCartItems = 0;
     _cart = cart;
-    // update();
+    var exist = false;
+    exist = _cart.existInCart(product);
+    print('exist $exist');
+    if (exist) {
+      _inCartItems = _cart.getQuantity(product);
+    }
+    print('_inCartItems $_inCartItems');
   }
 
+  // add the product to the cart
   void addToCart(ProductModel product) {
-    if (_quantity > 0) {
-      _cart.addItem(product, _quantity);
-    } else {
-      Get.snackbar(
-        'Error',
-        'You need to add at least one item to the card',
-        backgroundColor: AppColors.mainColor,
-        colorText: const Color.fromARGB(255, 234, 61, 61),
-      );
-    }
+    // if (_quantity > 0) {
+    _cart.addItem(product, _quantity);
+    // reset the quantity so it will not add to cart again
+    _quantity = 0;
+    _inCartItems = _cart.getQuantity(product);
+    _cart.items.forEach((key, value) {
+      print(' id ${value.id} quantity ${value.quantity}');
+    });
+    // } else {
+    //   Get.snackbar(
+    //     'Error',
+    //     'You need to add at least one item to the card',
+    //     backgroundColor: AppColors.mainColor,
+    //     colorText: const Color.fromARGB(255, 234, 61, 61),
+    //   );
+    // }
   }
 }
