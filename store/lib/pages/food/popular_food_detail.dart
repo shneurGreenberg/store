@@ -10,6 +10,7 @@ import 'package:store/widgets/text/big_text.dart';
 import '../../controllers/cart_controller.dart';
 import '../../controllers/popular_product_controller.dart';
 import '../../widgets/text/expandable_text.dart';
+import '../cart/cart_page.dart';
 
 class PopularFoodDetail extends StatelessWidget {
   final int pageId;
@@ -55,7 +56,41 @@ class PopularFoodDetail extends StatelessWidget {
                       Get.to(() => const MainFoodPage());
                     },
                     child: const AppIcon(icon: Icons.arrow_back_ios)),
-                const AppIcon(icon: Icons.shopping_cart_outlined),
+                GetBuilder<PopularProductController>(
+                  builder: ((controller) => Stack(children: [
+                        GestureDetector(
+                            onTap: () {
+                              Get.to(() => const CartPage());
+                            },
+                            child: const AppIcon(
+                                icon: Icons.shopping_cart_outlined)),
+                        Get.find<PopularProductController>().totalItems >= 1
+                            ? Positioned(
+                                right: 0,
+                                top: 0,
+                                child: AppIcon(
+                                  icon: Icons.circle,
+                                  size: 20,
+                                  iconColor: Colors.transparent,
+                                  backgroundColor: AppColors.mainColor,
+                                ),
+                              )
+                            : Container(),
+                        Get.find<PopularProductController>().totalItems >= 1
+                            ? Positioned(
+                                right: 3,
+                                top: 3,
+                                child: BigText(
+                                  text: Get.find<PopularProductController>()
+                                      .totalItems
+                                      .toString(),
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Container()
+                      ])),
+                )
               ],
             ),
           ),

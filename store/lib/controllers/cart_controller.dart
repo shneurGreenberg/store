@@ -9,13 +9,17 @@ import '../utils/colors.dart';
 class CartController extends GetxController {
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
+  // Storing the data of cart in this list
   final Map<int, CartModel> _items = {};
+  // Make data from the cart available to the all app through get method
   Map<int, CartModel> get items => _items;
 
   void addItem(ProductModel product, int quantity) {
+    var totalQuantety = 0;
     if (_items.containsKey(product.id!)) {
       // update item in list
       _items.update(product.id!, (value) {
+        totalQuantety = value.quantity! + quantity;
         return CartModel(
           id: value.id,
           name: value.name,
@@ -26,6 +30,9 @@ class CartController extends GetxController {
           time: DateTime.now().toString(),
         );
       });
+      if (totalQuantety <= 0) {
+        _items.remove(product.id);
+      }
     } else {
       // add new item to list
       if (quantity > 0) {
@@ -70,4 +77,18 @@ class CartController extends GetxController {
     }
     return quantity;
   }
+
+// return the sum number of all the item in cart
+  get totalItems {
+    var totalQuantity = 0;
+    _items.forEach((key, value) {
+      totalQuantity += value.quantity!;
+    });
+    return totalQuantity;
+  }
+
+// get a list of all items in cart
+// its convert the map to list to get item by index and not by key
+  List<CartModel> get getAllItems =>
+      _items.entries.map((e) => e.value).toList();
 }

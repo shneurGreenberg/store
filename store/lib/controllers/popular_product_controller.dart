@@ -6,6 +6,7 @@ import 'package:store/controllers/cart_controller.dart';
 import 'package:store/models/products_model.dart';
 import 'package:store/utils/colors.dart';
 import '../data/Repository/popular_product_repo.dart';
+import '../models/cart_model.dart';
 
 class PopularProductController extends GetxController {
   final PopularProductRepo popularProductRepo;
@@ -71,6 +72,10 @@ class PopularProductController extends GetxController {
         backgroundColor: AppColors.mainColor,
         colorText: Colors.white,
       );
+      if (_inCartItems > 0) {
+        _quantity = -_inCartItems;
+        return _quantity;
+      }
 
       return quantity = 0;
     } else if (_inCartItems + quantity > 30) {
@@ -101,21 +106,18 @@ class PopularProductController extends GetxController {
 
   // add the product to the cart
   void addToCart(ProductModel product) {
-    // if (_quantity > 0) {
     _cart.addItem(product, _quantity);
+
     // reset the quantity so it will not add to cart again
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
     _cart.items.forEach((key, value) {
       print(' id ${value.id} quantity ${value.quantity}');
     });
-    // } else {
-    //   Get.snackbar(
-    //     'Error',
-    //     'You need to add at least one item to the card',
-    //     backgroundColor: AppColors.mainColor,
-    //     colorText: const Color.fromARGB(255, 234, 61, 61),
-    //   );
-    // }
+    update();
   }
+
+  get totalItems => _cart.totalItems!;
+
+  List<CartModel> get getAllItems => _cart.getAllItems;
 }
