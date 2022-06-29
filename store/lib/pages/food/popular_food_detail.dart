@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store/widgets/app_icon.dart';
-import 'package:store/pages/home/main_food_page.dart';
+// import 'package:store/pages/home/main_food_page.dart';
 import 'package:store/utils/app_constans.dart';
 import 'package:store/utils/colors.dart';
 import 'package:store/utils/dimensions.dart';
@@ -9,12 +9,14 @@ import 'package:store/widgets/food_description.dart';
 import 'package:store/widgets/text/big_text.dart';
 import '../../controllers/cart_controller.dart';
 import '../../controllers/popular_product_controller.dart';
+import '../../routes/route_helper.dart';
 import '../../widgets/text/expandable_text.dart';
-import '../cart/cart_page.dart';
 
 class PopularFoodDetail extends StatelessWidget {
   final int pageId;
-  const PopularFoodDetail({Key? key, required this.pageId}) : super(key: key);
+  final String page;
+  const PopularFoodDetail({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,50 +51,47 @@ class PopularFoodDetail extends StatelessWidget {
             left: Dimensions.width20,
             right: Dimensions.width20,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      Get.to(() => const MainFoodPage());
-                    },
-                    child: const AppIcon(icon: Icons.arrow_back_ios)),
-                GetBuilder<PopularProductController>(
-                  builder: ((controller) => Stack(children: [
-                        GestureDetector(
-                            onTap: () {
-                              Get.to(() => const CartPage());
-                            },
-                            child: const AppIcon(
-                                icon: Icons.shopping_cart_outlined)),
-                        Get.find<PopularProductController>().totalItems >= 1
-                            ? Positioned(
-                                right: 0,
-                                top: 0,
-                                child: AppIcon(
-                                  icon: Icons.circle,
-                                  size: 20,
-                                  iconColor: Colors.transparent,
-                                  backgroundColor: AppColors.mainColor,
-                                ),
-                              )
-                            : Container(),
-                        Get.find<PopularProductController>().totalItems >= 1
-                            ? Positioned(
-                                right: 3,
-                                top: 3,
-                                child: BigText(
-                                  text: Get.find<PopularProductController>()
-                                      .totalItems
-                                      .toString(),
-                                  size: 12,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Container()
-                      ])),
-                )
-              ],
-            ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () => page == "cartpage"
+                          ? Get.toNamed(RouteHelper.getCartPage())
+                          : Get.toNamed(RouteHelper.getIntial()),
+                      child: const AppIcon(icon: Icons.arrow_back_ios)),
+                  GetBuilder<PopularProductController>(
+                    builder: ((controller) => Stack(children: [
+                          GestureDetector(
+                              onTap: () => controller.totalItems >= 1
+                                  ? Get.toNamed(RouteHelper.getCartPage())
+                                  : null,
+                              child: const AppIcon(
+                                  icon: Icons.shopping_cart_outlined)),
+                          controller.totalItems >= 1
+                              ? Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: AppIcon(
+                                    icon: Icons.circle,
+                                    size: 20,
+                                    iconColor: Colors.transparent,
+                                    backgroundColor: AppColors.mainColor,
+                                  ),
+                                )
+                              : Container(),
+                          controller.totalItems >= 1
+                              ? Positioned(
+                                  right: 3,
+                                  top: 3,
+                                  child: BigText(
+                                    text: controller.totalItems.toString(),
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Container()
+                        ])),
+                  )
+                ]),
           ),
           // Food introduction.
           Positioned(
@@ -111,25 +110,24 @@ class PopularFoodDetail extends StatelessWidget {
                 Dimensions.width20,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FoodDescription(title: product.name!),
-                  SizedBox(height: Dimensions.height20),
-                  const BigText(
-                    text: "intreduse",
-                  ),
-                  SizedBox(height: Dimensions.height20),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: ExpandableText(
-                        text: product.description!,
-                      ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FoodDescription(title: product.name!),
+                    SizedBox(height: Dimensions.height20),
+                    const BigText(
+                      text: "intreduse",
                     ),
-                  )
-                ],
-              ),
+                    SizedBox(height: Dimensions.height20),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: ExpandableText(
+                          text: product.description!,
+                        ),
+                      ),
+                    )
+                  ]),
             ),
-          ), // Expendable text widget.
+          ),
         ],
       ),
 
@@ -163,9 +161,7 @@ class PopularFoodDetail extends StatelessWidget {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        popularProduct.setQuantity(false);
-                      },
+                      onTap: () => popularProduct.setQuantity(false),
                       child: Icon(Icons.remove, color: AppColors.signColor),
                     ),
                     SizedBox(width: Dimensions.width10 / 2),
@@ -191,9 +187,7 @@ class PopularFoodDetail extends StatelessWidget {
                   borderRadius: BorderRadius.circular(Dimensions.radius20),
                 ),
                 child: GestureDetector(
-                  onTap: () {
-                    popularProduct.addToCart(product);
-                  },
+                  onTap: () => popularProduct.addToCart(product),
                   child: BigText(
                     text: "\$ ${product.price!} | Add to cart",
                     color: Colors.white,

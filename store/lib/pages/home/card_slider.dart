@@ -122,7 +122,7 @@ class _CardSliderState extends State<CardSlider> {
       child: Stack(children: [
         GestureDetector(
           onTap: () {
-            Get.toNamed(RouteHelper.getPopularFood(index));
+            Get.toNamed(RouteHelper.getPopularFood(index, "home"));
           },
           child: Container(
             height: Dimensions.pageViewContainer,

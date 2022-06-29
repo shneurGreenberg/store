@@ -68,11 +68,12 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: recommendedProduct.recommendedrProductList.length,
+                  itemCount: recommendedProduct.recommendedProductList.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteHelper.getRecommendedFood(index));
+                        Get.toNamed(
+                            RouteHelper.getRecommendedFood(index, "home"));
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -95,7 +96,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                   AppConstans.BASE_URL +
                                       "/uploads/" +
                                       recommendedProduct
-                                          .recommendedrProductList[index].img!,
+                                          .recommendedProductList[index].img!,
                                 ),
                               ),
                             ),
@@ -125,13 +126,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                     children: [
                                       BigText(
                                         text: recommendedProduct
-                                            .recommendedrProductList[index]
+                                            .recommendedProductList[index]
                                             .name!,
                                         color: Colors.white,
                                       ),
                                       SmallText(
                                         text: recommendedProduct
-                                            .recommendedrProductList[index]
+                                            .recommendedProductList[index]
                                             .name!,
                                         color: Colors.white,
                                       ),

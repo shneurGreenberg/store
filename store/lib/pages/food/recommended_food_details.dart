@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store/controllers/popular_product_controller.dart';
-import 'package:store/pages/cart/cart_page.dart';
 import 'package:store/widgets/app_icon.dart';
 import 'package:store/controllers/recommended_product_controller.dart';
 import 'package:store/utils/colors.dart';
@@ -15,13 +14,15 @@ import '../../utils/colors.dart';
 
 class RecommendedFood extends StatelessWidget {
   final int pageId;
+  final String page;
 
-  const RecommendedFood({Key? key, required this.pageId}) : super(key: key);
+  const RecommendedFood({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var product = Get.find<RecommendedProductController>()
-        .recommendedrProductList[pageId];
+    var product =
+        Get.find<RecommendedProductController>().recommendedProductList[pageId];
     Get.find<PopularProductController>()
         .initProduct(product, Get.find<CartController>());
 
@@ -36,19 +37,19 @@ class RecommendedFood extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    onTap: () {
-                      Get.toNamed(RouteHelper.getIntial());
-                    },
+                    onTap: () => page == "cartpage"
+                        ? Get.toNamed(RouteHelper.getCartPage())
+                        : Get.toNamed(RouteHelper.getIntial()),
                     child: const AppIcon(icon: Icons.clear)),
                 GetBuilder<PopularProductController>(
                   builder: ((controller) => Stack(children: [
                         GestureDetector(
-                            onTap: () {
-                              Get.to(() => const CartPage());
-                            },
+                            onTap: () => controller.totalItems >= 1
+                                ? Get.toNamed(RouteHelper.getCartPage())
+                                : null,
                             child: const AppIcon(
                                 icon: Icons.shopping_cart_outlined)),
-                        Get.find<PopularProductController>().totalItems >= 1
+                        controller.totalItems >= 1
                             ? Positioned(
                                 right: 0,
                                 top: 0,
@@ -60,14 +61,12 @@ class RecommendedFood extends StatelessWidget {
                                 ),
                               )
                             : Container(),
-                        Get.find<PopularProductController>().totalItems >= 1
+                        controller.totalItems >= 1
                             ? Positioned(
                                 right: 3,
                                 top: 3,
                                 child: BigText(
-                                  text: Get.find<PopularProductController>()
-                                      .totalItems
-                                      .toString(),
+                                  text: controller.totalItems.toString(),
                                   size: 12,
                                   color: Colors.white,
                                 ),
@@ -131,9 +130,7 @@ class RecommendedFood extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      controller.setQuantity(false);
-                    },
+                    onTap: () => controller.setQuantity(false),
                     child: AppIcon(
                       icon: Icons.remove,
                       iconColor: Colors.white,
@@ -147,9 +144,7 @@ class RecommendedFood extends StatelessWidget {
                     size: Dimensions.font26,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      controller.setQuantity(true);
-                    },
+                    onTap: () => controller.setQuantity(true),
                     child: AppIcon(
                       icon: Icons.add,
                       iconColor: Colors.white,
@@ -191,9 +186,7 @@ class RecommendedFood extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      controller.addToCart(product);
-                    },
+                    onTap: () => controller.addToCart(product),
                     child: Container(
                       padding: EdgeInsets.all(
                         Dimensions.width20,

@@ -10,7 +10,7 @@ class RecommendedProductController extends GetxController {
   List<ProductModel> _recommendedProductList = [];
 
   // get make this list accessible from outside this class
-  List<ProductModel> get recommendedrProductList => _recommendedProductList;
+  List<ProductModel> get recommendedProductList => _recommendedProductList;
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
 
