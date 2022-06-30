@@ -21,9 +21,7 @@ class RouteHelper {
   static List<GetPage> routes = [
     GetPage(
       name: "/",
-      page: () {
-        return const MainFoodPage();
-      },
+      page: () => const MainFoodPage(),
       transition: Transition.fadeIn,
     ),
     GetPage(
@@ -47,9 +45,7 @@ class RouteHelper {
     ),
     GetPage(
       name: cartPage,
-      page: () {
-        return const CartPage();
-      },
+      page: () => const CartPage(),
       transition: Transition.fadeIn,
     ),
   ];

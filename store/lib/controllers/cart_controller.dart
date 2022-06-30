@@ -16,48 +16,51 @@ class CartController extends GetxController {
 
   void addItem(ProductModel product, int quantity) {
     var totalQuantety = 0;
-    if (_items.containsKey(product.id!)) {
-      // update item in list
-      _items.update(product.id!, (value) {
-        totalQuantety = value.quantity! + quantity;
-        return CartModel(
-          id: value.id,
-          name: value.name,
-          price: value.price,
-          img: value.img,
-          quantity: value.quantity! + quantity,
-          isExist: true,
-          time: DateTime.now().toString(),
-          product: product,
-        );
-      });
-      if (totalQuantety <= 0) {
-        _items.remove(product.id);
-      }
-    } else {
-      // add new item to list
-      if (quantity > 0) {
-        _items.putIfAbsent(product.id!, () {
-          return CartModel(
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            img: product.img,
-            quantity: quantity,
-            isExist: true,
-            time: DateTime.now().toString(),
-            product: product,
-          );
-        });
-      } else {
-        Get.snackbar(
-          'Error',
-          'You need to add at least one item to the card',
-          backgroundColor: AppColors.mainColor,
-          colorText: const Color.fromARGB(255, 234, 61, 61),
-        );
-      }
-    }
+    _items.containsKey(product.id!)
+        ? {
+            // update item in list
+            _items.update(product.id!, (value) {
+              totalQuantety = value.quantity! + quantity;
+              return CartModel(
+                id: value.id,
+                name: value.name,
+                price: value.price,
+                img: value.img,
+                quantity: value.quantity! + quantity,
+                isExist: true,
+                time: DateTime.now().toString(),
+                product: product,
+              );
+            }),
+            if (totalQuantety <= 0) {_items.remove(product.id)}
+          }
+        : {
+            // add new item to list
+            quantity > 0
+                ? {
+                    _items.putIfAbsent(
+                      product.id!,
+                      () => CartModel(
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        img: product.img,
+                        quantity: quantity,
+                        isExist: true,
+                        time: DateTime.now().toString(),
+                        product: product,
+                      ),
+                    )
+                  }
+                : {
+                    Get.snackbar(
+                      'Error',
+                      'You need to add at least one item to the card',
+                      backgroundColor: AppColors.mainColor,
+                      colorText: const Color.fromARGB(255, 234, 61, 61),
+                    )
+                  }
+          };
     update();
   }
 
@@ -94,4 +97,11 @@ class CartController extends GetxController {
 // its convert the map to list to get item by index and not by key
   List<CartModel> get getAllItems =>
       _items.entries.map((e) => e.value).toList();
+
+  int get totalPrice {
+    var totalPrice = 0;
+    _items
+        .forEach((key, value) => totalPrice += value.price! * value.quantity!);
+    return totalPrice;
+  }
 }

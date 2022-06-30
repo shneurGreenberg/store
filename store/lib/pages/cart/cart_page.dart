@@ -13,8 +13,6 @@ import '../../widgets/text/big_text.dart';
 import '../../widgets/text/small_text.dart';
 
 class CartPage extends StatelessWidget {
-  // final String page;
-
   const CartPage({
     Key? key,
   }) : super(key: key);
@@ -205,6 +203,61 @@ class CartPage extends StatelessWidget {
               ))
         ],
       ),
+      bottomNavigationBar: GetBuilder<CartController>(builder: (totalPrice) {
+        return Container(
+          height: Dimensions.pageViewBottom,
+          decoration: BoxDecoration(
+            color: AppColors.buttonBackgroundColor,
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(Dimensions.radius20 * 2)),
+          ),
+          padding: EdgeInsets.only(
+            left: Dimensions.width20,
+            right: Dimensions.width20,
+            top: Dimensions.height30,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.width20,
+                  vertical: Dimensions.height20,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(width: Dimensions.width10 / 2),
+                    BigText(
+                      text: "\$ ${totalPrice.totalPrice}",
+                    ),
+                    SizedBox(width: Dimensions.width10 / 2),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(
+                  Dimensions.width20,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                ),
+                child: GestureDetector(
+                  onTap: () => {},
+                  child: const BigText(
+                    text: "Go to check out",
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

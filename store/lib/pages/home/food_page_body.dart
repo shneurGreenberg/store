@@ -21,7 +21,6 @@ class FoodPageBody extends StatefulWidget {
 
 class _FoodPageBodyState extends State<FoodPageBody> {
   PageController pageController = PageController(viewportFraction: 0.85);
-  // final double _scaleFactor = 0.8;
   double height = Dimensions.pageViewContainer;
 
   @override
@@ -29,9 +28,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     return Column(
       children: [
         // slider and dots section.
-
         const CardSlider(),
-
         // Recommended text section.
         // Recommended text title.
         SizedBox(
@@ -39,42 +36,39 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         ),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const BigText(
-                text: "Recommended",
+          child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            const BigText(
+              text: "Recommended",
+            ),
+            SizedBox(width: Dimensions.width10),
+            Container(
+              margin: const EdgeInsets.only(bottom: 3),
+              child: const BigText(
+                text: ".",
+                color: Colors.black26,
               ),
-              SizedBox(width: Dimensions.width10),
-              Container(
-                margin: const EdgeInsets.only(bottom: 3),
-                child: const BigText(
-                  text: ".",
-                  color: Colors.black26,
-                ),
-              ),
-              SizedBox(width: Dimensions.width10),
-              const SmallText(
-                text: "See all",
-                color: Colors.black54,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(width: Dimensions.width10),
+            const SmallText(
+              text: "See all",
+              color: Colors.black54,
+            ),
+          ]),
         ),
 
         // Recommended cards.
         GetBuilder<RecommendedProductController>(builder: (recommendedProduct) {
+          var _recommendedList = recommendedProduct.recommendedProductList;
+
           return recommendedProduct.isLoaded
               ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: recommendedProduct.recommendedProductList.length,
+                  itemCount: _recommendedList.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
-                        Get.toNamed(
-                            RouteHelper.getRecommendedFood(index, "home"));
-                      },
+                      onTap: () => Get.toNamed(
+                          RouteHelper.getRecommendedFood(index, "home")),
                       child: Container(
                         margin: EdgeInsets.only(
                           left: Dimensions.width20,
@@ -95,8 +89,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                 image: NetworkImage(
                                   AppConstans.BASE_URL +
                                       "/uploads/" +
-                                      recommendedProduct
-                                          .recommendedProductList[index].img!,
+                                      _recommendedList[index].img!,
                                 ),
                               ),
                             ),
@@ -125,15 +118,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       BigText(
-                                        text: recommendedProduct
-                                            .recommendedProductList[index]
-                                            .name!,
+                                        text: _recommendedList[index].name!,
                                         color: Colors.white,
                                       ),
                                       SmallText(
-                                        text: recommendedProduct
-                                            .recommendedProductList[index]
-                                            .name!,
+                                        text: _recommendedList[index].location!,
                                         color: Colors.white,
                                       ),
                                       const FoodInfo()
